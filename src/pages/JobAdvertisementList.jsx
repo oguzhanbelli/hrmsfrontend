@@ -8,7 +8,7 @@ export default function JobAdvertisementList() {
     useEffect(() => {
         let jobAdvertisementService = new JobAdvertisementService();
         jobAdvertisementService.getAdvertisements().then(result => setJobAdvertisements(result.data.data))
-    }, [])
+    }, [jobAdvertisements])
 
     return (
         <Segment>
