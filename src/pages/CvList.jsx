@@ -35,7 +35,7 @@ export default function CvList() {
   let Level4Content
   let rootPanels4
 
-
+ 
 
 
   const handlePanels = function (education) {
