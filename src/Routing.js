@@ -6,8 +6,7 @@ export const routes = [
     {
         path: "/",
         exact: true,
-      
-        title: "Home",
+        title: "Ana Sayfa",
         isHeaderElement: true,
       },
   {

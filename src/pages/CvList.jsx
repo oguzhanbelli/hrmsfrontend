@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import CvService from '../services/cvService'
-import { Grid, Accordion, Image, Card, Label } from 'semantic-ui-react'
+import { Grid, Accordion, Image, Card, Label, Header } from 'semantic-ui-react'
 
 export default function CvList() {
   const [cvs, setCvs] = useState([])
@@ -99,23 +99,23 @@ export default function CvList() {
 
       {
         cvs.map(cv => (
-          <Grid>
-            <Grid.Row>
-              <Grid.Column>
+      
+      
+       
 
-                <Card style={{ width: "auto", position: "relative", alignItems: "center" }} background="black" key={cv.id}>
+                <Card  style={{ width: "auto", position: "relative", alignItems: "center" }} background="black" key={cv.id}>
                   <Card.Content>
 
 
-                    {cv.photo === null || cv.photo == "string" ?
+                    {cv.photo === null || cv.photo === "string" ?
 
                       <div style={{ marginBottom: 20 }}>
-                        <Label content='Resim Bulunamadı!' icon='warning' />
+                        <Label content='Resim Bulunamadı!' icon='warning'/>
                         <span></span>
                       </div> :
 
                       <div style={{ marginBottom: 20 }}>
-                        <Image src={cv.photo} size="medium" rounded verticalAlign='top' />
+                        <Image src={cv.photo} as="a" size="medium" rounded verticalAlign='top'/>
                         <span></span>
                       </div>
                     }
@@ -130,12 +130,13 @@ export default function CvList() {
 
                   </Card.Content>
                   <Card.Content>
+                    <Header>
                     <h1>{cv.educations.schoolName}</h1>
+                    </Header>
+            
                   </Card.Content>
                 </Card>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+        
 
         ))
       }

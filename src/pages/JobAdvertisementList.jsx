@@ -1,70 +1,87 @@
 import React, { useEffect, useState } from 'react'
 import JobAdvertisementService from '../services/jobAdvertisementService'
-import { Item, Label, Segment } from 'semantic-ui-react'
-import { Table } from 'evergreen-ui'
+import { Item, Image, Container,Segment,Label } from 'semantic-ui-react'
+
+import styled from 'styled-components'
 export default function JobAdvertisementList() {
 
-    const [jobAdvertisements, setJobAdvertisements] = useState([])
-    useEffect(() => {
-        let jobAdvertisementService = new JobAdvertisementService();
-        jobAdvertisementService.getAdvertisements().then(result => setJobAdvertisements(result.data.data))
-    }, [jobAdvertisements])
 
-    return (
-        <Segment>
-                     <Table>
-                            <Table.Head>
-                             
-                              <Table.TextHeaderCell>Şirket İsmi</Table.TextHeaderCell>
-                              <Table.TextHeaderCell>Açıklama</Table.TextHeaderCell>
-                              <Table.TextHeaderCell>Bitiş Tarihi</Table.TextHeaderCell>
-                              <Table.TextHeaderCell>Başlangıç Tarihi</Table.TextHeaderCell>
-                            </Table.Head>
-                            <Table.Body height={240}>
-                              {jobAdvertisements.map((profile) => (
-                                <Table.Row key={profile.id} isSelectable onSelect={() => alert(profile.description)}>
-                                  <Table.TextCell>{profile.employerCompanyName}</Table.TextCell>
-                                  <Table.TextCell>{profile.description}</Table.TextCell>
-                                  <Table.TextCell isNumber>{profile.endDate}</Table.TextCell>
-                                  <Table.TextCell isNumber>{profile.createdDate}</Table.TextCell>
-                                </Table.Row>
-                              ))}
-                            </Table.Body>
-                          </Table>
+ const handleClick = function(e){
+   console.log(e.target.value);
 
-                <Item.Group divided>
+    };
+  
+  const [jobAdvertisements, setJobAdvertisements] = useState([])
+  useEffect(() => {
+    let jobAdvertisementService = new JobAdvertisementService();
+    jobAdvertisementService.getAdvertisements().then(result => setJobAdvertisements(result.data.data))
+  }, [jobAdvertisements])
 
-                    {
-                        jobAdvertisements.map(advertisement => (
+  const itemStyle = {
+    borderRadius:20,
+    border:"1px solid #f1f5f8",
+    background:"#f1f5f8",
+    maxWidth:850,
+   fontFamily:"Poppins",
+   
+
+  }
 
 
+  return (
+    
 
-                            <Item key={advertisement.id} >
-                                <Item.Image src='https://www.sabancivakfi.org/i/content/1792_1_logo-k-1.jpg' />
+    <Segment basic style={{overflowX:"hidden",overflowY:"auto",maxWidth:"850px",}}>
+     
+{
+ jobAdvertisements.map(advertisement => (
+  
+  <Item.Group key={advertisement.id}  divided>
+ 
+  <Item onClick={e => console.log(advertisement.id)} as='a'   style ={itemStyle}>
+    <div style={{display:"flex",justifyContent:"center",alignItems:"center",padding:5}}>
+   <div style={{padding:".25rem",background:"#fff",border:"1px solid #dee2e6",width:"58px",height:"58px",alignItems:"center",display:"flex"}}> 
+    <Item.Image rounded size="medium"  src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Sabanc%C4%B1_Holding_logo.svg/1200px-Sabanc%C4%B1_Holding_logo.svg.png' />
+    
+    </div>
+    </div>
+    <Item.Content  style={{ 
+ 
+  marginLeft:20,
+  paddingTop:20
+            }}  >
+      <Item.Header style={{fontFamily:"Poppins",fontWeight:"bolder",fontSize:17}} >{advertisement.jobName}</Item.Header>
+      <Item.Meta>
+        <span>{advertisement.employerCompanyName}</span>
 
-                                <Item.Content >
-                                    <Item.Header  as='a'>{advertisement.jobName}</Item.Header>
-                                    <Item.Meta>
-                                        <span className='cinema'>{advertisement.employerCompanyName}</span>
-                                    </Item.Meta>
-                                    <Item.Description style={{fontFamily:""}}>{advertisement.description}</Item.Description>
-                                    <Item.Extra style={{marginTop:"20px",marginRight:"30px"}}>
-                                        <Label icon='calendar alternate outline' content={advertisement.endDate}></Label>
-                                        <Label  icon='map marker alternate' content={advertisement.cityName} />
-                                    </Item.Extra>
-                                </Item.Content>
-                            </Item>
-                          
+      </Item.Meta>
+      <Item.Description style={{fontFamily:"Segoe UI",fontWeight:500}}>
+        {advertisement.cityName}
+      </Item.Description>
+      <Item.Description>
+        {advertisement.description}
+      </Item.Description>
+      <Container style={{display:"flex",justifyContent:"space-between",alignItems:"left",right:30}}>
+      <Item.Extra>
+      <Label style={{borderRadius:10, margin: "auto",
+    marginRight: "30px",marginBottom:10,fontWeight:600}}   content={advertisement.workingTimeTitle} />
+      </Item.Extra>
 
+      <Item.Extra >
+      <Label style={{borderRadius:20, margin: "auto",
+    marginLeft: "30px",fontWeight:600}} icon='time' content="7 gün önce"/>
+       
+      </Item.Extra>
+      </Container>
+    </Item.Content>
+  </Item>
 
-                        ))
-                        
+</Item.Group>
 
-                    }
-                </Item.Group>
-               
-          
-                        
-        </Segment>
-    )
+ ))
+}
+             
+    </Segment>
+
+  )
 }

@@ -4,6 +4,6 @@ export default class employerService {
 
     getAll() {
         return axios.get("/employers/getall")
-    }
+    };
 
 }
