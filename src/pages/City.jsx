@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Accordion, Menu, Dropdown, Input } from 'semantic-ui-react'
-import { Combobox,Select,Autocomplete } from 'evergreen-ui'
+import { Combobox, Select, Autocomplete } from 'evergreen-ui'
 import CityService from '../services/cityService'
 
 
-export default function City() {
+export default function City(props) {
 
-  
 
+    const handleClick = (e) => {
+        const newFilter = e.target.value
+        console.log(newFilter);
+        props.handleFilters(newFilter);
+             }
     const [city, setCity] = useState([])
 
     useEffect(() => {
@@ -19,20 +23,20 @@ export default function City() {
 
 
     return (
-        <div  style={{display:"flex",alignContent:"center",justifyContent:"center",marginTop:10}}>
-            
-            <Select search  onChange={event => console.log(event.target.value)}>
-                                {
-                                    city.map(c =>(
-                                        <option key={c.cityId} defaultValue="0" value={c.cityId} data-key={c.cityId}  >
-                                        {c.cityName}
-                                    </option>
+        <div style={{ display: "flex", alignContent: "center", justifyContent: "center", marginTop: 10 }}>
 
-                                    ))
-                                }
-                              
-                            </Select>
-                
+            <Select search onChange={event => handleClick(event)}>
+                {
+                    city.map(c => (
+                        <option key={c.cityId} defaultValue="0" value={c.cityName} data-key={c.cityName}  >
+                            {c.cityName}
+                        </option>
+
+                    ))
+                }
+
+            </Select>
+
         </div>
     )
 }

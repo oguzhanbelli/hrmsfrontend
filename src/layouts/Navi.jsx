@@ -63,7 +63,7 @@ export default function Navi() {
                 <img src='https://imgur.com/ftlUP5V.png' />
             </Menu.Item>
 
-            <Menu.Item style={{ marginRight: 20 }} active={activeItem === "/"}    onClick={handleItemClick} as={NavLink} exact to="/" content="home">
+            <Menu.Item style={{ marginRight: 20 }} active={activeItem === "/"}    onClick={handleItemClick} as={NavLink} exact to="/" >
                 <Title >Ana Sayfa</Title>
             </Menu.Item>
             <Menu.Item style={{ marginRight: 20 }} active={activeItem === "/cvList"} onClick={handleItemClick} as={NavLink}  exact to="/cvList">
