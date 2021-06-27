@@ -5,6 +5,9 @@ export default class jobAdvertisementService {
     getAdvertisements() {
         return axios.get("/adversitements/getActive")
     };
+    getPageable(pageNo,pageSize) {
+        return axios.get("/adversitements/getAllByPage?pageNo="+pageNo+"&pageSize="+pageSize)
+    };
     getPassiveAdvertisements() {
         return axios.get("/adversitements/getAllPassive")
     };

@@ -1,17 +1,46 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from 'react'
 import JobAdvertisementService from '../services/jobAdvertisementService'
-import { Item, Image, Container, Segment, Label } from 'semantic-ui-react'
+import { Item, Image, Container, Segment, Label, Pagination, Input,Icon } from 'semantic-ui-react'
 import JobPositions from '../pages/JobPositions'
+import { Select } from 'evergreen-ui';
 import City from '../pages/City'
 import styled from 'styled-components'
 import { Button } from 'bootstrap';
 
 export default function JobAdvertisementList() {
 
+  function calculateDay(value) {
+  
+    if (value) {
+      const seconds = Math.floor((+new Date() - +new Date(value)) / 1000);
+      if (seconds < 29) // less than 30 seconds ago will show as 'Just now'
+          return 'Şimdi';
+      const intervals = {
+          'yıl': 31536000,
+          'ay': 2592000,
+          'hafta': 604800,
+          'gün': 86400,
+          'saat': 3600,
+          'dakika': 60,
+          'saniye': 1
+      };
+      let counter;
+      for (const i in intervals) {
+          counter = Math.floor(seconds / intervals[i]);
+          if (counter > 0)
+              if (counter === 1) {
+                  return counter + ' ' + i + ' önce'; // singular (1 day ago)
+              } else {
+                  return counter + ' ' + i + ' önce'; // plural (2 days ago)
+              }
+      }
+  }
+  return value;
+  }
   const [filters, setFilters] = useState('')
   const handleFilters = (filters, category) => {
-  setFilters(filters)
+    setFilters(filters)
 
   }
 
@@ -20,12 +49,23 @@ export default function JobAdvertisementList() {
     console.log(e.target.value);
 
   };
-
+  const countryOptions = [
+    { key: '10', value: '10', text: '10 Ar Sayfala' },
+    { key: '20', value: '20', text: '20 Ar Sayfala' },
+    { key: '50', value: '50', text: '50 Ar Sayfala' },
+    { key: '100', value: '100', text: '100 Ar Sayfala' },
+  ]
   const [jobAdvertisements, setJobAdvertisements] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
+
+  const [pageNo, setActivePage] = useState(1);
+  const handleInputChange = (e, { value }) => setPageSize(value)
+  const handlePaginationChange = (e, { activePage }) => setActivePage(activePage)
+  const [pageSize, setPageSize] = useState(10);
+
   useEffect(() => {
     let jobAdvertisementService = new JobAdvertisementService();
-    jobAdvertisementService.getAdvertisements().then(result => setJobAdvertisements(result.data.data))
+
+    jobAdvertisementService.getPageable(pageNo, pageSize).then(result => setJobAdvertisements(result.data.data))
   }, [jobAdvertisements])
 
   const itemStyle = {
@@ -37,15 +77,16 @@ export default function JobAdvertisementList() {
 
 
   }
-
+  
 
   return (
 
+    
     <Segment basic style={{ overflowX: "hidden", overflowY: "auto", maxWidth: "850px", }}>
 
       <JobPositions handleFilters={filters => handleFilters(filters, "continents")}></JobPositions>
       <City handleFilters={filters => handleFilters(filters, "continents")}></City>
-   
+
       {
         jobAdvertisements.filter(value => {
           if (setFilters === '') {
@@ -95,7 +136,7 @@ export default function JobAdvertisementList() {
                     <Label style={{
                       borderRadius: 20, margin: "auto",
                       marginLeft: "30px", fontWeight: 600
-                    }} icon='time' content="7 gün önce" />
+                    }} icon='time' content={calculateDay(advertisement.createdDate)} />
 
                   </Item.Extra>
                 </Container>
@@ -106,7 +147,22 @@ export default function JobAdvertisementList() {
 
         ))
       }
+    
+      <Select onChange={e => setPageSize(e.target.value)} width={240} height={40}>
+        <option  value="10" selected>
+          10
+        </option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </Select>
+      <Pagination
 
+        activePage={pageNo}
+        onPageChange={handlePaginationChange}
+        totalPages={pageSize}
+        ellipsisItem={null}
+      />
     </Segment>
 
   )
