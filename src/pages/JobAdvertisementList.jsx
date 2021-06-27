@@ -49,12 +49,7 @@ export default function JobAdvertisementList() {
     console.log(e.target.value);
 
   };
-  const countryOptions = [
-    { key: '10', value: '10', text: '10 Ar Sayfala' },
-    { key: '20', value: '20', text: '20 Ar Sayfala' },
-    { key: '50', value: '50', text: '50 Ar Sayfala' },
-    { key: '100', value: '100', text: '100 Ar Sayfala' },
-  ]
+ 
   const [jobAdvertisements, setJobAdvertisements] = useState([])
 
   const [pageNo, setActivePage] = useState(1);
